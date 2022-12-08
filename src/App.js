@@ -1,33 +1,21 @@
-import React, { useEffect, useState } from "react";
-import TotalSigners from "components/TotalSigners";
-import { getActiveTabURL } from "./mypopup";
+//import "react-notifications/lib/notifications.css";
+//import { NotificationContainer } from "react-notifications";
+//import "bootstrap/dist/css/bootstrap.min.css";
+import React from "react";
+import { Container } from "react-bootstrap";
+import HomePage from "pages/HomePage";
+import { AppDataProvider } from "contexts/appData.js";
+console.log("process dev env", process.env.NODE_ENV);
+export const isDev = process.env.NODE_ENV === "development";
+
 function App() {
-  const [tabs, setTabs] = useState([]);
-  const [open, setOpen] = useState("false");
-  const [tab, setTab] = useState("");
-  useEffect(async () => {
-    const resp = await getActiveTabURL();
-    console.log("resp current tab", resp);
-    setTabs(resp);
-  }, []);
-  const openModal = (url) => {
-    setTab(url);
-    setOpen("true");
-  };
   return (
-    <div className="container">
-      <h1>Hello!</h1>
-      <ul id="tabs_list">
-        {tabs.length > 0
-          ? tabs.map((tab, index) => (
-              <li key={`tab_${index}`} onClick={(e) => openModal(tab.url)}>
-                {tab.url}
-              </li>
-            ))
-          : "No tabs open"}
-      </ul>
-      {open && <TotalSigners open={open} tab={tab} setOpen={setOpen} />}
-    </div>
+    <AppDataProvider>
+      <Container className="p-4 col-12">
+        <HomePage />
+        {/* <NotificationContainer /> */}
+      </Container>
+    </AppDataProvider>
   );
 }
 
