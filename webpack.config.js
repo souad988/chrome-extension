@@ -1,7 +1,11 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+const webpack = require("webpack");
+// const dotenv = require("dotenv");
 
+// // this will update the process.env with environment variables in .env file
+// dotenv.config();
 module.exports = {
   entry: {
     popup: "./src/index.js",
@@ -13,6 +17,10 @@ module.exports = {
   },
   resolve: {
     alias: {
+      buttons: path.resolve(__dirname, "src/Buttons/"),
+      contexts: path.resolve(__dirname, "src/Contexts/"),
+      contracts: path.resolve(__dirname, "src/Contracts/"),
+      pages: path.resolve(__dirname, "src/Pages/"),
       components: path.resolve(__dirname, "src/Components"),
     },
     extensions: [".js", ".jsx"],
@@ -45,6 +53,16 @@ module.exports = {
     ],
   },
   plugins: [
+    new webpack.EnvironmentPlugin({
+      REACT_APP_MNEMONICS: JSON.stringify({
+        0: "<wallet phrase>",
+        1: "<wallet phrase>",
+        2: "<wallet phrase>",
+        3: "<wallet phrase>",
+        4: "<wallet phrase>",
+      }),
+      REACT_APP_API_KEY: "<Provider API Key>",
+    }),
     new HtmlWebpackPlugin({
       template: "./public/index.html",
       filename: "index.html",
